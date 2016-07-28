@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 	"text/template"
+	"github.com/Masterminds/sprig"
 )
 
 func exists(path string) (bool, error) {
@@ -77,7 +78,7 @@ func isTrue(s string) bool {
 }
 
 func generateFile(templatePath, destPath string) bool {
-	tmpl := template.New(filepath.Base(templatePath)).Funcs(template.FuncMap{
+	tmpl := template.New(filepath.Base(templatePath)).Funcs(sprig.TxtFuncMap()).Funcs(template.FuncMap{
 		"contains": contains,
 		"exists":   exists,
 		"split":    strings.Split,

@@ -1,4 +1,4 @@
-github.com/hpcloud/tail 05d326f7170255d4f0c2a57dd00268b9beeb6e59
-golang.org/x/net 972f0c5fbe4ae29e666c3f78c3ed42ae7a448b0a
-gopkg.in/fsnotify.v0 ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6
-gopkg.in/tomb.v1 c131134a1947e9afd9cecfe11f4c6dff0732ae58
+github.com/Masterminds/sprig a117ed702927cdea38b68f1b9639d1d731cebfda
+github.com/aokoli/goutils 9c37978a95bd5c709a15883b6242714ea6709e64
+github.com/hpcloud/tail a30252cb686a21eb2d0b98132633053ec2f7f1e5
+golang.org/x/net 6a513affb38dc9788b449d59ffed099b8de18fa0
