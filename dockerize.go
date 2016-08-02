@@ -21,6 +21,28 @@ type hostFlagsVar []string
 type Context struct {
 }
 
+type CustomVars struct {
+	vars map[string]string
+}
+
+func (mapObject *CustomVars) String() string {
+	return fmt.Sprint(mapObject.vars)
+}
+/*
+ * Map
+ */
+func (mapObject *CustomVars) Set(value string) error {
+	mapObject.vars =  make(map[string]string)
+	cvars := strings.Split(value, "::")
+	for _, item := range cvars {
+		keyValue := strings.Split(item, "==")
+		mapObject.vars[strings.TrimSpace(keyValue[0])] = strings.TrimSpace(keyValue[1])
+
+	}
+	return nil
+}
+
+
 type HttpHeader struct {
 	name  string
 	value string
@@ -32,6 +54,9 @@ func (c *Context) Env() map[string]string {
 		sep := strings.Index(i, "=")
 		env[i[0:sep]] = i[sep+1:]
 	}
+	for k, v := range varFlag.vars {
+		env[k] = v
+	}
 	return env
 }
 
@@ -40,7 +65,7 @@ var (
 	version      bool
 	poll         bool
 	wg           sync.WaitGroup
-
+	varFlag 	CustomVars
 	templatesFlag   sliceVar
 	stdoutTailFlag  sliceVar
 	stderrTailFlag  sliceVar
@@ -166,6 +191,8 @@ func main() {
 	flag.Var(&stdoutTailFlag, "stdout", "Tails a file to stdout. Can be passed multiple times")
 	flag.Var(&stderrTailFlag, "stderr", "Tails a file to stderr. Can be passed multiple times")
 	flag.StringVar(&delimsFlag, "delims", "", `template tag delimiters. default "{{":"}}" `)
+	flag.Var(&varFlag, "var", `custom arguements" `)
+
 	flag.Var(&headersFlag, "wait-http-header", "HTTP headers, colon separated. e.g \"Accept-Encoding: gzip\". Can be passed multiple times")
 	flag.Var(&waitFlag, "wait", "Host (tcp/tcp4/tcp6/http/https) to wait for before this container starts. Can be passed multiple times. e.g. tcp://db:5432")
 	flag.DurationVar(&waitTimeoutFlag, "timeout", 10*time.Second, "Host wait timeout")

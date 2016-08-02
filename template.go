@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"text/template"
 	"github.com/Masterminds/sprig"
+	"github.com/twiechert/gtf"
 )
 
 func exists(path string) (bool, error) {
@@ -78,18 +79,18 @@ func isTrue(s string) bool {
 }
 
 func generateFile(templatePath, destPath string) bool {
-	tmpl := template.New(filepath.Base(templatePath)).Funcs(sprig.TxtFuncMap()).Funcs(template.FuncMap{
-		"contains": contains,
+	tmpl := template.New(filepath.Base(templatePath)).Funcs(gtf.GtfFuncMap).Funcs(sprig.TxtFuncMap()).Funcs(template.FuncMap{
+		"_contains": contains,
 		"exists":   exists,
-		"split":    strings.Split,
-		"replace":  strings.Replace,
-		"default":  defaultValue,
+		"_split":    strings.Split,
+		"_replace":  strings.Replace,
+		"_default":  defaultValue,
 		"parseUrl": parseUrl,
-		"atoi":     strconv.Atoi,
-		"add":      add,
+		"_atoi":     strconv.Atoi,
+		"_add":      add,
 		"isTrue":   isTrue,
-		"lower":    strings.ToLower,
-		"upper":    strings.ToUpper,
+		"_lower":    strings.ToLower,
+		"_upper":    strings.ToUpper,
 	})
 
 	if len(delims) > 0 {

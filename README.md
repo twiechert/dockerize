@@ -126,6 +126,15 @@ variables within a template with `.Env`.
 {{ .Env.PATH }} is my path
 ```
 
+In some cases you may need to pass variables to the templates that contain characters which environment variables do not support.
+In that case you can pass the variables directly to dockerize as illustrated below.
+ Consider that your variables must not contain `==` or `::`
+
+```
+dockerize -var "test==232 :: test2==runtime(java.lang:type=Runtime|*),jvmMemory(java.lang:type=Memory|HeapMemoryUsage;HeapMemoryUsage),threading(java.lang:type=Threading|ThreadAllocatedMemoryEnabled;TotalStartedThreadCount)" -template config.tmpl:file2.cfg
+```
+
+
 There are a few built in functions as well:
 
   * `default $var $default` - Returns a default value for one that does not exist. `{{ default .Env.VERSION "0.1.2" }}`
@@ -139,6 +148,8 @@ There are a few built in functions as well:
   * `isTrue $value` - Parses a string $value to a boolean value. `{{ if isTrue .Env.ENABLED }}`
   * `lower $value` - Lowercase a string.
   * `upper $value` - Uppercase a string.
+
+In addition to the built-in function listed below, the go function from [sprig](github.com/Masterminds/sprig) have been included.
 
 ## License
 
